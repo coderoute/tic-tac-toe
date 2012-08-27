@@ -52,12 +52,12 @@ class BoardTest extends FunSuite {
 
   test("second move can be made by O") {
     val board = Board(Array("X  ", "   ", "   "))
-    assert(board.whoHasNextMove == 'O')
+    assert(board.whoHasNextMove === 'O')
   }
 
   test("third move can be made by X") {
     val board = Board(Array("X  ", "O  ", "   "))
-    assert(board.whoHasNextMove == 'X')
+    assert(board.whoHasNextMove === 'X')
   }
 
   test("Last move can be made by X if the board has only one place left and no one has won") {
@@ -105,7 +105,7 @@ class BoardTest extends FunSuite {
   test("First move sets the target cell to X") {
     val board = Board()
     board.makeMove(0, 0)
-    assert(board.get(0, 0) == 'X')
+    assert(board.get(0, 0) === 'X')
   }
 
   test("Move over occupied cell causes error") {
@@ -120,32 +120,32 @@ class BoardTest extends FunSuite {
     val board = Board()
     board.makeMove(0, 0)
     board.makeMove(1, 1)
-    assert(board.get(1, 1) == 'O')
+    assert(board.get(1, 1) === 'O')
   }
 
   test("If all chars in 1st row are X, X has won") {
     val board = Board(Array("XXX", "O O", " O "))
-    assert(board.whoWon.get == 'X', "whoWon = "+ board.whoWon)
+    assert(board.whoWon.get === 'X')
   }
 
   test("If all chars in 2nd row are X, X has won") {
     val board = Board(Array("O O", "XXX", " O "))
-    assert(board.whoWon.get == 'X', "whoWon = "+ board.whoWon)
+    assert(board.whoWon.get === 'X')
   }
 
   test("If all chars in 3rd row are X, X has won") {
     val board = Board(Array("O O", " O ", "XXX"))
-    assert(board.whoWon.get == 'X', "whoWon = "+ board.whoWon)
+    assert(board.whoWon.get === 'X')
   }
 
   test("If all chars in 1st row are O, O has won") {
     val board = Board(Array("OOO", "X X", " X "))
-    assert(board.whoWon.get == 'O', "whoWon = "+ board.whoWon)
+    assert(board.whoWon.get === 'O')
   }
 
   test("On empty board no one has won") {
     val board = Board()
-    assert(board.whoWon == None, "whoWon = "+ board.whoWon)
+    assert(board.whoWon === None)
   }
 
   test("No one has Won if the board is empty") {
@@ -179,32 +179,66 @@ class BoardTest extends FunSuite {
 
   test("If all chars in 1st column are X, X has won") {
     val board = Board(Array("X O", "XO ", "XOX"))
-    assert(board.whoWon.get == 'X', "whoWon = "+ board.whoWon)
+    assert(board.whoWon.get === 'X')
   }
 
   test("If all chars in 2nd column are X, X has won") {
     val board = Board(Array(" XO", "OX ", "OXX"))
-    assert(board.whoWon.get == 'X', "whoWon = "+ board.whoWon)
+    assert(board.whoWon.get === 'X')
   }
 
   test("If all chars in 3rd column are X, X has won") {
     val board = Board(Array("O X", " OX", "OXX"))
-    assert(board.whoWon.get == 'X', "whoWon = "+ board.whoWon)
+    assert(board.whoWon.get === 'X')
   }
 
   test("If all chars in 1st column are O, O has won") {
     val board = Board(Array("O X", "OX ", "OXX"))
-    assert(board.whoWon.get == 'O', "whoWon = "+ board.whoWon)
+    assert(board.whoWon.get === 'O')
   }
 
   test("If all chars in 2nd column are O, O has won") {
     val board = Board(Array(" OX", "XO ", "XOX"))
-    assert(board.whoWon.get == 'O', "whoWon = "+ board.whoWon)
+    assert(board.whoWon.get === 'O')
   }
 
   test("If all chars in 3rd column are O, O has won") {
     val board = Board(Array("X O", " XO", "XXO"))
-    assert(board.whoWon.get == 'O', "whoWon = "+ board.whoWon)
+    assert(board.whoWon.get === 'O')
   }
 
+  test("There is no winning diagonal in an empty board") {
+    val board = Board()
+    assert(board.isSomeWinningDiagonal === false)
+  }
+
+  test("If all chars in \\ diagonal are X, there is a winning diagonal") {
+    val board = Board(Array("X O", " XO", "XOX"))
+    assert(board.isSomeWinningDiagonal)
+  }
+
+  test("If all chars in \\ diagonal are O, there is a winning diagonal") {
+    val board = Board(Array("O X", " OX", "XXO"))
+    assert(board.isSomeWinningDiagonal)
+  }
+
+  test("If all chars in / diagonal are X, there is a winning diagonal") {
+    val board = Board(Array("O X", " XO", "XOX"))
+    assert(board.isSomeWinningDiagonal)
+  }
+
+  test("If all chars in / diagonal are O, there is a winning diagonal") {
+    val board = Board(Array("X O", " OX", "OX "))
+    assert(board.isSomeWinningDiagonal)
+  }
+
+  test("If all chars in \\ diagonal are X, X has won") {
+    val board = Board(Array("X O", " XO", "XOX"))
+    assert(board.whoWon.get === 'X')
+  }
+
+  test("If all chars in / diagonal are O, O has won") {
+    val board = Board(Array("X O", "XO ", "OX "))
+    assert(board.whoWon.get === 'O')
+  }
 }

@@ -1,3 +1,5 @@
+import scala.Array
+
 /**
  * @author vgowadia
  */
@@ -8,11 +10,11 @@ class Board(val grid: Array[Array[Char]]) {
   def isEmpty(row: Int, col: Int): Boolean = get(row, col) == ' '
 
   override def toString: String = {
-    grid.foldLeft("")( (iteration_result,row) => iteration_result + rowToString(row) + "\n")
+    grid.foldLeft("")((iteration_result, row) => iteration_result + rowToString(row) + "\n")
   }
 
-  private def rowToString(row: Array[Char]) : String = {
-    "| " + row.foldLeft("")((iteration_result, cell) => iteration_result + cell + " | " )
+  private def rowToString(row: Array[Char]): String = {
+    "| " + row.foldLeft("")((iteration_result, cell) => iteration_result + cell + " | ")
   }
 
   def isValid: Boolean = {
@@ -48,6 +50,8 @@ class Board(val grid: Array[Array[Char]]) {
       return findRowWinner(grid)
     if (isSomeWinningColumn(grid))
       return findColumnWinner(grid)
+    if (isSomeWinningDiagonal())
+      return Some(grid(1)(1))
     None
   }
 
@@ -61,6 +65,22 @@ class Board(val grid: Array[Array[Char]]) {
 
   def isSomeWinningRow(_grid: Array[Array[Char]]): Boolean = {
     _grid.foldLeft(false)((iteration_result, current) => iteration_result || (current(0) == current(1) && current(0) == current(2) && current(0) != ' '))
+  }
+
+  def isSomeWinningDiagonal(): Boolean = {
+    isBackSlashDiagonalWinning(grid) || isBackSlashDiagonalWinning(flip(grid))
+  }
+
+  private def flip(_grid: Array[Array[Char]]): Array[Array[Char]] = {
+    for (row <- _grid) yield row.reverse
+  }
+
+  private def isBackSlashDiagonalWinning(_grid: Array[Array[Char]]): Boolean = {
+    if (_grid(1)(1) == ' ') {
+      false
+    } else {
+      (0 to 2).foldLeft(true)((iteration_result, current) => iteration_result && _grid(current)(current) == _grid(0)(0))
+    }
   }
 
   private def findRowWinner(_grid: Array[Array[Char]]): Option[Char] = {
