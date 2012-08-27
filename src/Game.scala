@@ -22,6 +22,7 @@ class Game {
   }
 
   def play = {
+    println("Rows and Columns are numbered as 0,1,2")
     val board = Board()
     while (!board.hasSomeOneWon && board.whoHasNextMove != ' ') {
       print("Enter row,column position to make move for player " + board.whoHasNextMove + ": ")

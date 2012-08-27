@@ -172,6 +172,16 @@ class BoardTest extends FunSuite {
     assert(board.hasSomeOneWon)
   }
 
+  test("If all chars in \\ diagonal are equal, someone has won") {
+    val board = Board(Array("X O", "OX ", "XOX"))
+    assert(board.hasSomeOneWon)
+  }
+
+  test("If all chars in / diagonal are equal, someone has won") {
+    val board = Board(Array("X O", "XO ", "OX "))
+    assert(board.hasSomeOneWon)
+  }
+
   test("If board is full and no row or no column or no diagnol matches than no one has won") {
     val board = Board(Array("XOX", "XOX", "OXO"))
     assert(!board.hasSomeOneWon)

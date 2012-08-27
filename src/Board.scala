@@ -56,7 +56,7 @@ class Board(val grid: Array[Array[Char]]) {
   }
 
   def hasSomeOneWon: Boolean = {
-    isSomeWinningRow(grid) || isSomeWinningColumn(grid)
+    isSomeWinningRow(grid) || isSomeWinningColumn(grid) || isSomeWinningDiagonal
   }
 
   def isSomeWinningColumn(_grid: Array[Array[Char]]): Boolean = {
